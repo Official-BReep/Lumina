@@ -1,5 +1,6 @@
 // import file system module
-const fs = require('fs')
+const fs = require('fs');
+const { listenerCount } = require('process');
 
 // function to parse an expression in the Egg language
 function parseExpression(program) {
@@ -14,6 +15,7 @@ function parseExpression(program) {
   } else if (match = /^\d+\b/.exec(program)) {
     // create a value node with the matched number as the value
     expr = {type: "value", value: Number(match[0])};
+    // check if the programm  is a list between brackets
   // check if the program is a word, which is any sequence of non-space, non-parenthesis characters
   } else if (match = /^[^\s(),#"]+/.exec(program)) {
     // create a word node with the matched characters as the name
@@ -123,6 +125,9 @@ function parse(program) {
   }
 
 specialForms.if = (args, scope) => {
+    if (args.length > 3){
+        throw new ReferenceError("You are using to much arguments to if statement!")
+    }
     // console.log("ARGS:");
     // console.log(args);
     // console.log("SCOPE:");
@@ -240,24 +245,23 @@ specialForms.if = (args, scope) => {
   
     return str.charAt(pos);
   };
-  
-  specialForms.len = (args, scope) => {
-    if (args.length !== 1){
-        throw new SyntaxError("Wrong number of arguments to length")
-    }  
-    const str = evaluate(args[0], scope);
-    return str.length;
-  };
 
   specialForms.replace = (args, scope) => {
     if (args.length !== 3){
         throw new SyntaxError("Wrong number of arguments to replace");
     }
 
-    const str = evaluate(args[0], scope);
+    let object = evaluate(args[0], scope);
     const index = evaluate(args[1], scope);
-    const new_str = evaluate(args[2], scope);
-    return str.substring(0, index) + new_str + str.substring(index + 1);
+    const new_thing = evaluate(args[2], scope);
+    if (Array.isArray(object)){
+        object[index] = new_thing;
+        return object;        
+    } else{
+        let a = object.split("");
+        object[index] = new_thing;
+        return a.join("");
+    }
   }
 
   const topScope = Object.create(null);
@@ -270,12 +274,25 @@ specialForms.if = (args, scope) => {
     console.log(value);
     return value;
   };
+  topScope["array"] = function() {
+    return Array.prototype.slice.call(arguments, 0);
+   }
+
+    // Element of array
+    topScope["element"] = function(array, i) {
+        return array[i];
+    }
+    // len of string
+    topScope["len"] = function(object){
+        return object.length;
+    }
+
 
   function run(program) {
     return evaluate(parse(program), Object.create(topScope));
   }
 // read code into string 
-var filename = "ExampleCodes/bubble_sort.os";
+var filename = "ExampleCodes/example_code12.os";
 fs.readFile(filename, (err, inputD) => {
     if (err) throw err;
          run(inputD.toString());
