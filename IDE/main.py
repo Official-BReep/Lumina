@@ -1,23 +1,62 @@
 import sys
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QTextCharFormat, QFont, QFontDatabase
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QPlainTextEdit
+from PyQt5.QtCore import Qt, QSettings, QDir
+from PyQt5.QtGui import QTextCharFormat, QFont, QFontDatabase, QPalette, QColor
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QPlainTextEdit, QMenu, QHBoxLayout, QWidget, QFileSystemModel
 from highlighter import Highlighter
 
-class Main(QMainWindow):
+class Color(QWidget):
+
+    def __init__(self, color):
+        super(Color, self).__init__()
+        self.setAutoFillBackground(True)
+
+        palette = self.palette()
+        palette.setColor(QPalette.Window, QColor(color))
+        self.setPalette(palette)
+
+class IDE(QMainWindow):
     def __init__(self):
-        super(Main, self).__init__()
+        super(IDE, self).__init__()
+
+        self.resize(500,500)
+        self.getSettingValues()
 
         self.setWindowTitle("IDE")
-        self.resize(500,500)
 
-        self.layout = QVBoxLayout()
+        self.layouts()
+
         self.highlighter = Highlighter()
         self.setup_editor()
-        self.layout.addWidget(self.editor)
-        self.setLayout(self.layout)
-        self.setCentralWidget(self.editor) # Hinzufügen des Editors zum zentralen Widget des MainWindow
+
+        self.codevalue = self.settings.value("code")
+
+        self.vlayout2.addWidget(self.editor)
+        self.editor.setPlainText(self.codevalue)
+
+        self.widget = QWidget()
+        self.widget.setLayout(self.hlayout)
+        self.setCentralWidget(self.widget) # Hinzufügen des Editors zum zentralen Widget des MainWindow
+
+    def layouts(self):
+        self.hlayout = QHBoxLayout()
+        self.vlayout = QVBoxLayout()
+        self.vlayout2 = QVBoxLayout()
+
+        self.hlayout.addLayout(self.vlayout)
+        self.hlayout.addLayout(self.vlayout2)
+        
+    def getSettingValues(self):
+        self.settings = QSettings("IDE", 'App')
+        try:
+            self.resize(self.settings.value('size'))
+        except:
+            pass
+
+    def closeEvent(self,event):
+        self.settings.setValue('size', self.size())
+        self.settings.setValue('code', self.editor.toPlainText())
+
 
     def setup_editor(self):
         class_format = QTextCharFormat()
@@ -59,10 +98,20 @@ class Main(QMainWindow):
         font = QFontDatabase.systemFont(QFontDatabase.SystemFont.FixedFont)
         self.editor.setFont(font)
 
-        self.highlighter.setDocument(self.editor.document()) #TODO Ist die Zeile da, dann kann man nichts schreiben und Programm stürzt ab
-        #self.editor.setDocument(self.highlighter.document())
+        self.highlighter.setDocument(self.editor.document())
+
+    def contextMenuEvent(self,event):
+        contextmenu = QMenu(self)
+        newAct = contextmenu.addAction("New")
+        openAct = contextmenu.addAction("Open")
+        quitAct = contextmenu.addAction("Quit")
+
+        action = contextmenu.exec_(self.mapToGlobal(event.pos()))
+
+        if action == quitAct:
+            self.close()
 
 app = QApplication(sys.argv)
-ex = Main()
+ex = IDE()
 ex.show()
 sys.exit(app.exec())
