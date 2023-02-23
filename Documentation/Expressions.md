@@ -8,11 +8,11 @@ The provided code also uses a number of specialized functions, including:
 
 <code>array()</code>: Creates an array with the specified values.
   
-<code>len()</code>: Returns the length of an array.
+<code>len()</code> is a function that returns the length of an array. To use it, simply call the function with the array as the argument. For example, if you have an array called "my_array", you can find its length by calling <code>len(my_array)</code>.
   
-<code>element()</code>: Retrieves the value of an element in an array at a given index.
+<code>element()</code>: Retrieves the value of an element in an array at a given index. Example: <code> out(element(arr, 2))</code>
   
-<code>replace()</code>: Replaces the value of an element in an array at a given index with a new value.
+<code>replace()</code>: Replaces the value of an element in an array at a given index with a new value. For example: <code> define(arr, replace(arr, 3, "test"))</code>
   
 <code>out()</code>: Outputs a value to the console.
 
