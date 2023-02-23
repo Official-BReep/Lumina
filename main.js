@@ -1,6 +1,9 @@
 // import file system module
 const fs = require('fs');
-const { listenerCount } = require('process');
+const readline = require('readline').createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
 // function to parse an expression in the Egg language
 function parseExpression(program) {
@@ -198,11 +201,6 @@ specialForms.if = (args, scope) => {
   
     const str = evaluate(args[0], scope);
     const substr = evaluate(args[1], scope);
-  
-    if (typeof str !== "string" || typeof substr !== "string") {
-      throw new TypeError("Both arguments to index must be strings");
-    }
-  
     const index = str.indexOf(substr);
     return index;
   };
@@ -258,22 +256,28 @@ specialForms.if = (args, scope) => {
         object[index] = new_thing;
         return object;        
     } else{
-        let a = object.split("");
-        object[index] = new_thing;
-        return a.join("");
+      return object.substring(0, index) + new_thing + object.substring(index + 1);
     }
   }
+
 
   const topScope = Object.create(null);
   
   for (let op of ["+", "-", "*", "/", "==", "<", ">", "!="]) {
     topScope[op] = Function("a, b", `return a ${op} b;`);
   }
+  topScope.true = true;
+  topScope.false = false;
 
   topScope.out = value => {
     console.log(value);
     return value;
   };
+
+  topScope["dict"] = function() {
+        
+  }
+
   topScope["array"] = function() {
     return Array.prototype.slice.call(arguments, 0);
    }
@@ -287,13 +291,22 @@ specialForms.if = (args, scope) => {
         return object.length;
     }
 
+    topScope["append"] = function(array, append_stuff) {
+      return array.concat(append_stuff);
+    }
+
+    console.log(topScope);
 
   function run(program) {
     return evaluate(parse(program), Object.create(topScope));
   }
+
+// var filename = "ExampleCodes/bubble_sort.lu";
 // read code into string 
-var filename = "ExampleCodes/example_code12.os";
-fs.readFile(filename, (err, inputD) => {
+readline.question('Enter file path:', filename => {
+  fs.readFile(filename, (err, inputD) => {
     if (err) throw err;
          run(inputD.toString());
  })
+  readline.close();
+});
