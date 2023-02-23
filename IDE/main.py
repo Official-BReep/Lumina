@@ -73,30 +73,37 @@ class IDE(QMainWindow):
         class_format = QTextCharFormat()
         class_format.setForeground(Qt.blue)
         class_format.setFontWeight(QFont.Bold)
-        pattern = r'^\s*class\s+\w+\(.*$'
-        self.highlighter.add_mapping(pattern, class_format)
+        class_pattern = r'^\s*class\s+\w+\(.*$'
+        self.highlighter.add_mapping(class_pattern, class_format)
 
         output_format = QTextCharFormat()
-        output_format.setForeground(Qt.GlobalColor.darkRed)
+        output_format.setForeground(Qt.GlobalColor.yellow)
         output_format.setFontWeight(QFont.Weight.Bold)
-        pattern = r'^\s*out\s*\(\w*|.*\)$'
-        self.highlighter.add_mapping(pattern, output_format)
+        output_pattern = r'^\s*|w*|.*out\s*\(\"*\.*|w*\"*\)$'
+        self.highlighter.add_mapping(output_pattern, output_format)
 
         define_format = QTextCharFormat()
         define_format.setForeground(Qt.GlobalColor.blue)
         define_format.setFontWeight(QFont.Weight.Bold)
-        pattern = r'define\s*\(\".*|w*\"\)'
-        self.highlighter.add_mapping(pattern, define_format)
+        define_pattern = r'^\s*|w*|.*define\s*\(\"*\.*|w*\"*\)$'
+        self.highlighter.add_mapping(define_pattern, define_format)
 
         output_text_format = QTextCharFormat()
         output_text_format.setForeground(Qt.GlobalColor.black)
-        pattern = r'\(w*\)$'
-        self.highlighter.add_mapping(pattern, output_text_format)
+        output_text_pattern = r'\(\w*\)$'
+        self.highlighter.add_mapping(output_text_pattern, output_text_format)
+
 
         string_format = QTextCharFormat()
         string_format.setForeground(Qt.darkGreen)
-        pattern = r'"\w*\"\,*|;*$'
-        self.highlighter.add_mapping(pattern, string_format)
+        string_pattern = r'"\w*\"\,*|;*$'
+        self.highlighter.add_mapping(string_pattern, string_format)
+
+        comment_format = QTextCharFormat()
+        comment_format.setForeground(Qt.darkGray)
+        comment_pattern = r'\b\B!!\s*\W'
+        self.highlighter.add_mapping(comment_pattern, comment_format)
+
 
         link_format = QTextCharFormat()
         link_format.setForeground(Qt.blue)
@@ -116,9 +123,12 @@ class IDE(QMainWindow):
         try:
             p = self.editor.textCursor().position()
             result = self.editor.toPlainText()[:p][-1]
+            check = self.editor.toPlainText()[:p+1][-1]
             if result == "(":self.editor.insertPlainText(")")
             if result == "{":self.editor.insertPlainText("}")
             if result == "[":self.editor.insertPlainText("]")
+            if result == '"':self.editor.insertPlainText('"')
+            if result == "'":self.editor.inseltPlainText("'")
             else:pass
         except:pass
 
@@ -132,6 +142,8 @@ class IDE(QMainWindow):
 
         if action == quitAct:
             self.close()
+        if action == newAct():
+            self.editor.document().setPlainText("a")
 
 app = QApplication(sys.argv)
 ex = IDE()
