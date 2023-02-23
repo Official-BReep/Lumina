@@ -1,8 +1,10 @@
 import sys
+import time
 
 from PyQt5.QtCore import Qt, QSettings, QDir
 from PyQt5.QtGui import QTextCharFormat, QFont, QFontDatabase, QPalette, QColor
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QPlainTextEdit, QMenu, QHBoxLayout, QWidget, QFileSystemModel
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QPlainTextEdit, QMenu, QHBoxLayout, QWidget, \
+    QFileSystemModel, QLabel, QPushButton
 from highlighter import Highlighter
 
 class Color(QWidget):
@@ -24,6 +26,9 @@ class IDE(QMainWindow):
 
         self.setWindowTitle("IDE")
 
+        self.label = QLabel("Projekt Folder")
+        self.btn = QPushButton("Klick Mich")
+
         self.layouts()
 
         self.highlighter = Highlighter()
@@ -31,7 +36,13 @@ class IDE(QMainWindow):
 
         self.codevalue = self.settings.value("code")
 
+        self.vlayout.addWidget(self.btn)
+        self.vlayout.addWidget(self.label)
         self.vlayout2.addWidget(self.editor)
+
+        self.hlayout.addLayout(self.vlayout)
+        self.hlayout.addLayout(self.vlayout2)
+
         self.editor.setPlainText(self.codevalue)
 
         self.widget = QWidget()
@@ -43,8 +54,8 @@ class IDE(QMainWindow):
         self.vlayout = QVBoxLayout()
         self.vlayout2 = QVBoxLayout()
 
-        self.hlayout.addLayout(self.vlayout)
-        self.hlayout.addLayout(self.vlayout2)
+        self.hlayout.setContentsMargins(0,0,0,0)
+        #self.hlayout.setSpacing(190)
         
     def getSettingValues(self):
         self.settings = QSettings("IDE", 'App')
@@ -94,11 +105,22 @@ class IDE(QMainWindow):
 
 
         self.editor = QPlainTextEdit()
+        self.editor.textChanged.connect(self.brackets)
 
         font = QFontDatabase.systemFont(QFontDatabase.SystemFont.FixedFont)
         self.editor.setFont(font)
 
         self.highlighter.setDocument(self.editor.document())
+
+    def brackets(self):
+        try:
+            p = self.editor.textCursor().position()
+            result = self.editor.toPlainText()[:p][-1]
+            if result == "(":self.editor.insertPlainText(")")
+            if result == "{":self.editor.insertPlainText("}")
+            if result == "[":self.editor.insertPlainText("]")
+            else:pass
+        except:pass
 
     def contextMenuEvent(self,event):
         contextmenu = QMenu(self)
