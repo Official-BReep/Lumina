@@ -1,0 +1,26 @@
+do(
+    define(arr, "289435028342847959"),
+    define(n, len(arr)),
+    define(swapped, "true"),
+    while(==(swapped, "true"),
+        do(
+            define(swapped, "false"),
+            define(i, 0),
+            while(<(i, -(n,1)),
+                do(
+                    if(>(charAt(arr,i), charAt(arr, +(i,1))),
+                        do(
+                            define(temp, charAt(arr,i)),
+                            define(arr, replace(arr, i, charAt(arr, +(i,1)))),
+                            define(arr, replace(arr, +(i,1), temp)),
+                            define(swapped, "true")
+                        )
+                    ),
+                    do(define(i, +(i,1)))
+                )
+            ),
+            define(i, -(i,1))
+        )
+    ),
+    out(arr)
+)

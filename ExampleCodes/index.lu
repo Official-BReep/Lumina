@@ -1,0 +1,4 @@
+do(
+    define(x, "hello"),
+    out(index("hello", "e"))    
+)

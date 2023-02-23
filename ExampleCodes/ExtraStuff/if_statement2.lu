@@ -1,0 +1,12 @@
+do(
+    define(test, "Helo world!"),
+    out(test),
+    if(==(test, "Hello world!"),
+        do(
+            out("is the same")
+        ),
+        do(
+            out("its not the same")
+        )
+    )
+)

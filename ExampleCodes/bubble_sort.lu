@@ -1,0 +1,26 @@
+do(
+    define(arr, array(21,8,9,224,3,54,50,25,8,3,34,23,8,4,75,9,59)),
+    define(n, len(arr)),
+    define(swapped, "true"),
+    while(==(swapped, "true"),
+        do(
+            define(swapped, "false"),
+            define(i, 0),
+            while(<(i, -(n,1)),
+                do(
+                    if(>(element(arr,i), element(arr, +(i,1))),
+                        do(
+                            define(temp, element(arr,i)),
+                            define(arr, replace(arr, i, element(arr, +(i,1)))),
+                            define(arr, replace(arr, +(i,1), temp)),
+                            define(swapped, "true")
+                        )
+                    ),
+                    do(define(i, +(i,1)))
+                )
+            ),
+            define(i, -(i,1))
+        )
+    ),
+    out(arr)
+)

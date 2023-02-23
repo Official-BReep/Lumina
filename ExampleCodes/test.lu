@@ -1,0 +1,12 @@
+do(
+    define(multiply, 
+    fun(num1, num2, num3,
+    *(num1, num2, num3)
+    )),
+    define(u, dict(key("hey"), value("test")))
+    out(multiply(2,2,2)),
+    define(x, array(1,2,3,4)),
+    out(x),
+    define(x, append(x, 5)),
+    out(x)
+)

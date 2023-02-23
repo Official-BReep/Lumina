@@ -1,0 +1,5 @@
+do(define(plusOne, 
+   fun(
+      a, define(b, +(a,1)), b
+      )),
+   print(plusOne(10)))

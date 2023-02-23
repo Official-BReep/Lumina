@@ -1,0 +1,5 @@
+do(
+    define(x, "hello"),
+    define(x,replace(1,x,"z")),
+    out(x)
+)

@@ -1,0 +1,8 @@
+do(
+    define(x, "hello world"),
+    define(content, charAt(x, 2)),
+    out(charAt(x, 2)),
+    out(content),
+    define(len, len(x)),
+    out(len)
+)

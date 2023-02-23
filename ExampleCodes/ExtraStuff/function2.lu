@@ -1,0 +1,8 @@
+do(
+    define(multiply, 
+    fun(
+        num1, num2,
+        *(num1, num2)
+    )),
+    out(multiply(8,4))
+)

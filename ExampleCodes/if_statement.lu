@@ -1,0 +1,19 @@
+do(
+    define(x, 8),
+    define(compare_num, 5),
+    if(>(x, compare_num),
+        do(
+        out("The number is"),
+        define(difference, -(x, compare_num)),
+        out(difference),
+        out("larger")
+        ),
+        do(
+        define(difference, -(compare_num, x)),
+        out("The number is"),
+        out(difference),
+        out("smaller")
+        )
+    ),
+    out("end of program")
+)

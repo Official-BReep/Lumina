@@ -1,0 +1,9 @@
+do(
+    define(y,0),
+    while(!=(y,6),
+        do(
+            out(y), 
+            define(y, +(y,1))
+        )
+    )
+)

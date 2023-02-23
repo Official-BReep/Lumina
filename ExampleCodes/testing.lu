@@ -1,0 +1,14 @@
+do(
+    define(x,1),
+    define(y, "heallo"),
+    out(charAt(y,x)),
+    define(test, array(1,2,3,"hey")),
+    out(test),
+    out(element(test,3)),
+    out(len(test)),
+    out(len(y)),
+    define(y, replace(y,1,"sui")),
+    define(test, replace(test, 1, "sui")),
+    out(test),
+    out(y)
+)

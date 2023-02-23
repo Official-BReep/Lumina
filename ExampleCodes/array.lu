@@ -1,0 +1,9 @@
+do(
+    define(list, array(1,2,3,"hello")),
+    out(list),
+    out(element(list, 1)),
+    define(list, replace(list,2,4)),
+    out(list),
+    define(list, append(list, "world")),
+    out(list)
+)
