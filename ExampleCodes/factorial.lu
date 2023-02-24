@@ -1,6 +1,6 @@
 do(
     define(num, 5),
-    define(result,  1),
+    define(result,  num),
     define(number, 1),
     define(x, 0),
     while(!=(number, num),
@@ -9,6 +9,5 @@ do(
         define(number, +(number, 1)),
         )
     ),
-    define(result, *(result, num)),
     out(result)
 )
