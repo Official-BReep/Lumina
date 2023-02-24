@@ -1,21 +1,14 @@
 do(
     define(num, 5),
     define(result,  1),
-    define(nums, array(num)),
     define(number, 1),
     define(x, 0),
     while(!=(number, num),
         do(
-        define(nums, append(nums, number)),
+        define(result, *(result, number)),
         define(number, +(number, 1)),
         )
     ),
-    while(!=(x, len(nums)),
-        do(
-            define(result, *(result, element(nums, x))),
-            define(x, +(x, 1))
-            )
-        ),
-    
+    define(result, *(result, num)),
     out(result)
 )
