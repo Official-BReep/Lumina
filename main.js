@@ -1,9 +1,5 @@
 // import file system module
 const fs = require('fs');
-const readline = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
 
 // function to parse an expression in the Egg language
 function parseExpression(program) {
@@ -301,12 +297,20 @@ specialForms.if = (args, scope) => {
     return evaluate(parse(program), Object.create(topScope));
   }
 
-// var filename = "ExampleCodes/bubble_sort.lu";
-// read code into string 
-readline.question('Enter file path:', filename => {
-  fs.readFile(filename, (err, inputD) => {
-    if (err) throw err;
-         run(inputD.toString());
- })
-  readline.close();
-});
+  // Retrieve the command line arguments
+const args = process.argv.slice(2);
+let arg = args[0];
+// Initialize an empty object to store custom attributes
+const customAttributes = {};
+
+if (arg === '--run') {
+    // Get the next argument as the value of the custom attribute
+    const value = args[1];
+    customAttributes.filename = value;
+  }
+
+// Access the custom attribute
+fs.readFile(customAttributes.filename, (err, inputD) => {
+  if (err) throw err;
+       run(inputD.toString());
+})
