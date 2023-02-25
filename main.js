@@ -240,6 +240,15 @@ specialForms.if = (args, scope) => {
     return str.charAt(pos);
   };
 
+  specialForms.dict = (args, scope) => {
+    let dict = {};
+    for (let pair of args) {
+      dict[pair.args[0].value] = pair.args[1].value;
+    }
+    return dict;
+    
+  }
+
   specialForms.replace = (args, scope) => {
     if (args.length !== 3){
         throw new SyntaxError("Wrong number of arguments to replace");
@@ -267,11 +276,13 @@ specialForms.if = (args, scope) => {
 
   topScope.out = value => {
     console.log(value);
+    //console.table(value);
     return value;
   };
 
-  topScope["dict"] = function() {
-        
+  topScope.out_table = value => {
+    console.table(value);
+    return value;
   }
 
   topScope["array"] = function() {
@@ -291,7 +302,22 @@ specialForms.if = (args, scope) => {
       return array.concat(append_stuff);
     }
 
-    console.log(topScope);
+    topScope["//"] = function(thing) {
+      // its just a comment xD
+      return
+    }
+
+    topScope["add"] = function(dict, new_key, new_value) {
+      new_dict = dict;
+      new_dict[new_key] = new_value;
+      return new_dict;
+    }
+
+    topScope["get"] = function(dict, key) {
+      return dict[key];
+    }
+
+    // console.log(topScope);
 
   function run(program) {
     return evaluate(parse(program), Object.create(topScope));
@@ -310,7 +336,7 @@ if (arg === '--run') {
   }
 
 // Access the custom attribute
-fs.readFile(customAttributes.filename, (err, inputD) => {
+fs.readFile(customAttributes.filename, (err, code) => {
   if (err) throw err;
-       run(inputD.toString());
+       run(code.toString());
 })
