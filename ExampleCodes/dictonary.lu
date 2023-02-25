@@ -1,0 +1,11 @@
+do(
+    //("define a dictonary"),
+    define(dictonary, dict(do("key1","value1"),do("key2","value2"))),
+    out(dictonary),
+    //("add element"),
+    define(dictonary, add(dictonary, "key3", "value3")),
+    out(dictonary),
+    //("get element"),
+    define(x, get(dictonary, "key2")),
+    out(x)
+)
