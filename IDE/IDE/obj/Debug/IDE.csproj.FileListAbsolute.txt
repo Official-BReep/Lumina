@@ -1,0 +1,11 @@
+C:\Users\leo4u\source\repos\IDE\IDE\bin\Debug\IDE.exe.config
+C:\Users\leo4u\source\repos\IDE\IDE\bin\Debug\IDE.exe
+C:\Users\leo4u\source\repos\IDE\IDE\bin\Debug\IDE.pdb
+C:\Users\leo4u\source\repos\IDE\IDE\obj\Debug\IDE.csproj.AssemblyReference.cache
+C:\Users\leo4u\source\repos\IDE\IDE\obj\Debug\IDE.csproj.SuggestedBindingRedirects.cache
+C:\Users\leo4u\source\repos\IDE\IDE\obj\Debug\IDE.Form1.resources
+C:\Users\leo4u\source\repos\IDE\IDE\obj\Debug\IDE.Properties.Resources.resources
+C:\Users\leo4u\source\repos\IDE\IDE\obj\Debug\IDE.csproj.GenerateResource.cache
+C:\Users\leo4u\source\repos\IDE\IDE\obj\Debug\IDE.csproj.CoreCompileInputs.cache
+C:\Users\leo4u\source\repos\IDE\IDE\obj\Debug\IDE.exe
+C:\Users\leo4u\source\repos\IDE\IDE\obj\Debug\IDE.pdb
